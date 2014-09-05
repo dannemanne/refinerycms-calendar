@@ -12,7 +12,7 @@ urls = %w(/calendar/venues /calendar/events)
 urls.each do |url|
   if defined?(::Refinery::Page) && ::Refinery::Page.where(:link_url => url).empty?
     page = ::Refinery::Page.create(
-      :title => 'Venues',
+      :title => url.split('/').last.titlecase,
       :link_url => url,
       :deletable => false,
       :menu_match => "^#{url}(\/|\/.+?|)$"
