@@ -37,6 +37,10 @@ module Refinery
           where('refinery_calendar_events.starts_at >= ?', Time.now)
         end
 
+        def current_and_upcoming
+          where("#{table_name}.ends_at >= ?", Time.now).order("#{table_name}.starts_at ASC")
+        end
+
         def featured
           where(:featured => true)
         end
