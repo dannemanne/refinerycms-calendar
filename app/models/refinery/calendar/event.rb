@@ -38,7 +38,7 @@ module Refinery
         end
 
         def current_and_upcoming
-          where("#{table_name}.ends_at >= ?", Time.now).order("#{table_name}.starts_at ASC")
+          where("#{table_name}.ends_at >= ? OR #{table_name}.starts_at >= ?", Time.now, Time.now).order("#{table_name}.starts_at ASC")
         end
 
         def featured
