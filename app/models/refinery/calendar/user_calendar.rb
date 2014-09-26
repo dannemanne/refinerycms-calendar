@@ -8,7 +8,7 @@ module Refinery
       validates :calendar_id,   presence: true, uniqueness: { scope: :user_id }
 
       before_create do
-        self.rgb_code ||= calendar.try(:default_rgb_cdoe)
+        self.rgb_code ||= calendar.try(:default_rgb_code)
       end
 
     end
