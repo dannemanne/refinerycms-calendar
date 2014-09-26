@@ -3,6 +3,7 @@ module Refinery
     module Admin
       class EventsController < ::Refinery::AdminController
         before_filter :find_venues, :except => [:index, :destroy]
+        before_filter :find_calendars, :except => [:index, :destroy]
 
         crudify :'refinery/calendar/event',
                 :xhr_paging => true,
@@ -12,6 +13,10 @@ module Refinery
         private
         def find_venues
           @venues = Venue.order('name')
+        end
+
+        def find_calendars
+          @calendars = Calendar.includes(:user).order('title')
         end
       end
     end

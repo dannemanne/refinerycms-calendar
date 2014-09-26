@@ -4,7 +4,8 @@ module Refinery
       before_filter :find_page, :except => :archive
 
       def index
-        @events = Event.upcoming.order('refinery_calendar_events.starts_at DESC')
+        @active_calendars = Calendar.active_for_user(current_refinery_user)
+        @events = Event.in_calendars(@active_calendars).upcoming.order('refinery_calendar_events.starts_at DESC')
 
         # you can use meta fields from your model instead (e.g. browser_title)
         # by swapping @page for @event in the line below:

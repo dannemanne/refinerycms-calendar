@@ -3,6 +3,10 @@
               :object => @event,
               :include_object_name => true %>
 
+  <div class='field'>
+    <%= f.label :calendar_id, 'Calendar' %>
+    <%= f.collection_select :calendar_id, @calendars, :id, :uniq_name, {  }, :class => 'chzn-select', :'data-placeholder' => 'Search Calendar', :style => 'width: 300px;' %>
+  </div>
 
   <div class='field'>
     <%= f.label :title -%>

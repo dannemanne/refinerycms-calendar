@@ -28,4 +28,15 @@ Refinery::Core::Engine.routes.append do
     end
   end
 
+  # Admin routes
+  namespace :calendar, :path => '' do
+    namespace :admin, :path => 'refinery/calendar' do
+      resources :calendars, :except => :show do
+        collection do
+          post :update_positions
+        end
+      end
+    end
+  end
+
 end

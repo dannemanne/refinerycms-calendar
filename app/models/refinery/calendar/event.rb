@@ -6,12 +6,14 @@ module Refinery
       friendly_id :title, :use => :slugged
 
       belongs_to :venue
+      belongs_to :calendar
 
       validates :title, :presence => true, :uniqueness => true
+      validates :calendar_id,   presence: true
 
       attr_accessible :title, :from, :to, :registration_link,
                       :venue_id, :excerpt, :description,
-                      :featured, :position
+                      :featured, :position, :calendar_id
 
       alias_attribute :from, :starts_at
       alias_attribute :to, :ends_at
@@ -20,6 +22,8 @@ module Refinery
                 :to => :venue,
                 :prefix => true,
                 :allow_nil => true
+
+      delegate :title, :to => :venue, :prefix => true, :allow_nil => true
 
       scope :starting_on_day, lambda {|day| where(starts_at: day.beginning_of_day..day.end_of_day) }
       scope :ending_on_day, lambda {|day| where(ends_at: day.beginning_of_day..day.end_of_day) }
@@ -47,6 +51,10 @@ module Refinery
 
         def archive
           where('refinery_calendar_events.starts_at < ?', Time.now)
+        end
+
+        def in_calendars(calendars)
+          where('refinery_calendar_events.calendar_id IN (?)', calendars.map(&:id) << -1)
         end
 
       end
