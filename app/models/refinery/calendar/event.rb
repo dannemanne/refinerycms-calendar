@@ -41,9 +41,9 @@ module Refinery
         eod = day.end_of_day
 
         starts_at.present? &&
-          ((starts_at > bod && starts_at < eod) ||
+            ((starts_at >= bod && starts_at <= eod) ||
             (ends_at.present? && (
-              (ends_at > bod && ends_at < eod) ||
+              (ends_at >= bod && ends_at <= eod) ||
               (starts_at < bod && ends_at > eod)
             )))
       end
