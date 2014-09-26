@@ -12,11 +12,11 @@ module Refinery
 
         private
         def find_venues
-          @venues = Venue.order('name')
+          @venues = ::Refinery::Calendar::Venue.order('name')
         end
 
         def find_calendars
-          @calendars = Calendar.includes(:user).order('title')
+          @calendars = ::Refinery::Calendar::Calendar.includes(:user).order('title')
         end
       end
     end
