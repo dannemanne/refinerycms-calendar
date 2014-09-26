@@ -7,7 +7,7 @@ module Refinery
 
       attr_accessor :activate_on_create
 
-      attr_accessible :default_rgb_code, :private, :activate_on_create
+      attr_accessible :default_rgb_code, :private, :activate_on_create, :user_id, :function
 
       validates :title, presence: true, uniqueness: { scope: [:user_id] }
       validates :function,  uniqueness: true, allow_blank: true
