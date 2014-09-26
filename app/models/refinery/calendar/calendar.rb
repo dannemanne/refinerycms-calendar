@@ -23,7 +23,14 @@ module Refinery
       end
 
       def uniq_name
-        "#{title} (#{ [user.try(:full_name), function].compact.join })"
+        if user.present?
+          "#{title} (#{ user.full_name })"
+        elsif function.present?
+          "#{title} (#{ function })"
+        else
+          title
+        end
+
       end
 
 
