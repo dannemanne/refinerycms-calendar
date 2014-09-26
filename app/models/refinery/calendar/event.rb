@@ -37,8 +37,12 @@ module Refinery
       }
 
       def is_on_day?(day)
-        range = (day.beginning_of_day..day.end_of_day)
-        range === starts_at || range === ends_at || (starts_at < day && ends_at > day )
+        bod = day.beginning_of_day
+        eod = day.end_of_day
+
+        (starts_at > bod && starts_at < eod) ||
+            (ends_at > bod && ends_at < eod) ||
+            (starts_at < bod && ends_at > eod)
       end
 
       class << self
