@@ -36,6 +36,11 @@ module Refinery
         )
       }
 
+      def is_on_day?(day)
+        range = (day.beginning_of_day..day.end_of_day)
+        range === starts_at || range === ends_at || (starts_at < day && ends_at > day )
+      end
+
       class << self
         def upcoming
           where('refinery_calendar_events.starts_at >= ?', Time.now)
