@@ -36,7 +36,7 @@ module Refinery
 
       class << self
         def active_for_user(user)
-          joins(:user_calendars).where(refinery_calendar_user_calendars: { user_id: user.try(:id) })
+          joins(:user_calendars).where(refinery_calendar_user_calendars: { user_id: user.try(:id), active: true })
         end
       end
 
