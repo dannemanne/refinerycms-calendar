@@ -4,6 +4,7 @@ Refinery::Core::Engine.routes.append do
   namespace :calendar do
     get 'events/archive' => 'events#archive'
     resources :events, :only => [:index, :show]
+    resources :user_calendars, only: [:create]
   end
 
   # Admin routes
