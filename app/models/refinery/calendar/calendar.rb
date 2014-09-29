@@ -36,7 +36,14 @@ module Refinery
 
       class << self
         def active_for_user(user)
-          joins(:user_calendars).where(refinery_calendar_user_calendars: { user_id: user.try(:id), inactive: false })
+          joins(:user_calendars).where(refinery_calendar_user_calendars: { user_id: user.id, inactive: false })
+        end
+
+        def visible_for_user(user)
+          where(
+              arel_table[:private].eq(false).
+                  or(arel_table[:user_id]).eq(user.id)
+          )
         end
       end
 
