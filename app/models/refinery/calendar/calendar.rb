@@ -40,10 +40,7 @@ module Refinery
         end
 
         def visible_for_user(user)
-          where(
-              arel_table[:private].matches(false).
-                  or(arel_table[:user_id]).matches(user.id)
-          )
+          where('refinery_calendar_calendars.private = ? OR refinery_calendar_calendars.user_id = ?', false, user.id)
         end
       end
 
