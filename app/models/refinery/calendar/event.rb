@@ -23,7 +23,7 @@ module Refinery
                 :prefix => true,
                 :allow_nil => true
 
-      delegate :title, :to => :venue, :prefix => true, :allow_nil => true
+      delegate :title, :to => :calendar, :prefix => true, :allow_nil => true
 
       scope :starting_on_day, lambda {|day| where(starts_at: day.beginning_of_day..day.end_of_day) }
       scope :ending_on_day, lambda {|day| where(ends_at: day.beginning_of_day..day.end_of_day) }
