@@ -4,6 +4,7 @@ module Refinery
       belongs_to :user,     class_name: '::Refinery::User'
       has_many :user_calendars,   dependent: :destroy
       has_many :users,            through: :user_calendars
+      has_many :events,           dependent: :destroy
 
       attr_accessor :activate_on_create
 
