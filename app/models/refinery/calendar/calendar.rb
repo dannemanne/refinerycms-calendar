@@ -41,8 +41,8 @@ module Refinery
 
         def visible_for_user(user)
           where(
-              arel_table[:private].eq(false).
-                  or(arel_table[:user_id]).eq(user.id)
+              arel_table[:private].matches(false).
+                  or(arel_table[:user_id]).matches(user.id)
           )
         end
       end
