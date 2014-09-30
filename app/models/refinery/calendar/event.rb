@@ -55,6 +55,15 @@ module Refinery
           where('refinery_calendar_events.starts_at >= ?', Time.now)
         end
 
+        def today
+          t = Date.today
+          between_times t.beginning_of_day, t.end_of_day
+        end
+
+        def between_times(start_time, end_time)
+          where("(#{table_name}.starts_at >= ? AND #{table_name}.starts_at <= ?) OR (#{table_name}.ends_at >= ? AND #{table_name}.ends_at <= ?) OR (#{table_name}.starts_at < ? AND #{table_name}.ends_at > ?)", start_time, end_time, start_time, end_time, start_time, end_time)
+        end
+
         def current_and_upcoming
           where("#{table_name}.ends_at >= ? OR #{table_name}.starts_at >= ?", Time.now, Time.now).order("#{table_name}.starts_at ASC")
         end
