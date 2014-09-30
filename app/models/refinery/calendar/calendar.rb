@@ -13,12 +13,29 @@ module Refinery
       validates :title, presence: true, uniqueness: { scope: [:user_id] }
       validates :function,  uniqueness: true, allow_blank: true
 
+      before_save do
+        self.default_rgb_code = '%06x' % (rand * 0xffffff) if default_rgb_code.blank?
+      end
+
       after_create do
         if activate_on_create
           unless private
             ::Refinery::User.all.each do |user|
               self.users << user
             end
+          end
+        end
+      end
+
+      after_save do
+        if changes[:id].nil? # Only perform on update, not create
+          if changes[:default_rgb_code].any?
+            # Update all user_calendars that still have the same rgb_code as
+            # the previous default_rgb_code (meaning the user never manually updated).
+            #
+            #   changes[:default_rgb_code] index 0 => old value
+            #   changes[:default_rgb_code] index 1 => new value
+            user_calendars.update_all({ rgb_code: changes[:default_rgb_code][1] }, { rgb_code: changes[:default_rgb_code][0] })
           end
         end
       end
