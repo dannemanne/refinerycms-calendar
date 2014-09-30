@@ -49,6 +49,13 @@ module Refinery
 
       end
 
+      def text_color
+        cr = default_rgb_code[0..1].to_i(16)
+        cg = default_rgb_code[2..3].to_i(16)
+        cb = default_rgb_code[4..5].to_i(16)
+        (0.2126*cr + 0.7152*cg + 0.0722*cb) > 127 ? '000000' : 'ffffff'
+      end
+
 
       class << self
         def active_for_user(user)
