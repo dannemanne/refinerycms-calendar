@@ -26,8 +26,6 @@ module Refinery
       def uniq_name
         if user.present?
           "#{title} (#{ user.full_name })"
-        elsif function.present?
-          "#{title} (#{ function })"
         else
           title
         end
