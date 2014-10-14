@@ -1,0 +1,15 @@
+var dialog = $("<%=escape_javascript render('event_form') %>");
+
+$('.js_exist_cal_radio').change(function(){
+  $('.js_exist_cal_id_select').attr('disabled', '');
+  $('.js_new_cal_title_field').attr('disabled', 'disabled');
+  $('.js_new_cal_private_box').attr('disabled', 'disabled');
+});
+
+$('.js_new_cal_radio').change(function(){
+  $('.js_exist_cal_id_select').attr('disabled', 'disabled');
+  $('.js_new_cal_title_field').attr('disabled', '');
+  $('.js_new_cal_private_box').attr('disabled', '');
+});
+
+dialog.appendTo('body').dialog();
