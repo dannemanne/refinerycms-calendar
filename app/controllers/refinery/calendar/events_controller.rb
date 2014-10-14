@@ -66,7 +66,7 @@ module Refinery
                 title: params[:event].delete(:new_calendar_title),
                 private: params[:event].delete(:private),
                 user_id: current_refinery_user.id,
-                activate_oc_create: '1')
+                activate_on_create: '1')
           end
         end
       end

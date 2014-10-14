@@ -1,32 +1,5 @@
-<div title="Create Calendar Event" style="min-width: 10rem;">
+<div title="Create Calendar Event" style="width: 600px;">
   <%= form_for @event, url: refinery.calendar_events_path do |f| %>
-
-    <fieldset id="existing-calendar">
-      <legend>Existing Calendar</legend>
-
-      <div class="field">
-        <%= radio_button_tag nil, nil, personal_calendars.any?, class: 'js_exist_cal_radio' %>
-        <%= f.collection_select :calendar_id, personal_calendars, :id, :title, {  }, class: 'js_exist_cal_id_select', disabled: personal_calendars.empty? %>
-      </div>
-
-    </fieldset>
-
-    <fieldset id="new-calendar">
-      <legend>New Calendar</legend>
-
-      <div class="field">
-        <%= radio_button_tag nil, nil, personal_calendars.empty?, class: 'js_new_cal_radio' %>
-        <%= f.text_field :new_calendar_title, class: 'js_new_cal_title_field', disabled: personal_calendars.any? %>
-      </div>
-
-      <div class="field">
-        <p>
-          <%= f.check_box :private %>
-          <%= f.label :private, :class => 'stripped js_new_cal_private_box', disabled: personal_calendars.any? %>
-        </p>
-      </div>
-
-    </fieldset>
 
     <div class="field">
       <%= f.label :title %>
@@ -35,7 +8,7 @@
 
     <div class='field'>
       <%= f.label :from -%>
-      <%= f.text_field :from, :class => 'datetime_range'  -%>
+      <%= f.text_field :from, value: @event.from.try(:strftime, '%Y-%m-%d %H:%M'), :class => 'datetime_range'  -%>
     </div>
 
     <div class='field'>
@@ -45,12 +18,44 @@
 
     <div class='field'>
       <%= f.label :venue_id, 'Venue' %>
-      <%= f.collection_select :venue_id, @venues, :id, :name, { :include_blank => 'None' }, :class => 'chzn-select', :'data-placeholder' => 'Search Venues', :style => 'width: 300px;' %>
+      <%= f.collection_select :venue_id, @venues, :id, :name, { :include_blank => 'None' }, :class => 'chzn-select', :'data-placeholder' => 'Search Venues' %>
     </div>
 
     <div class='field'>
       <%= f.label :excerpt -%>
       <%= f.text_area :excerpt, :size => '65x5'  -%>
+    </div>
+
+    <div class="row">
+      <div class="medium-6 columns">
+        <fieldset id="existing-calendar">
+          <legend>Existing Calendar</legend>
+
+          <div class="field">
+            <%= radio_button_tag 'calendar', nil, personal_calendars.any?, class: 'js_exist_cal_radio' %>
+            <%= f.collection_select :calendar_id, personal_calendars, :id, :title, {  }, class: 'js_exist_cal_id_select', disabled: personal_calendars.empty? %>
+          </div>
+
+        </fieldset>
+      </div>
+      <div class="medium-6 columns">
+        <fieldset id="new-calendar">
+          <legend>New Calendar</legend>
+
+          <div class="field">
+            <%= radio_button_tag 'calendar', nil, personal_calendars.empty?, class: 'js_new_cal_radio' %>
+            <%= f.text_field :new_calendar_title, value: personal_calendars.empty? ? 'My Calendar' : '', class: 'js_new_cal_title_field', disabled: personal_calendars.any? %>
+          </div>
+
+          <div class="field">
+            <p>
+              <%= f.check_box :private, checked: false, :class => 'stripped js_new_cal_private_box', disabled: personal_calendars.any? %>
+              <%= f.label :private %>
+            </p>
+          </div>
+
+        </fieldset>
+      </div>
     </div>
 
     <p><%= f.submit 'Create Event', class: 'button round tiny' %></p>
