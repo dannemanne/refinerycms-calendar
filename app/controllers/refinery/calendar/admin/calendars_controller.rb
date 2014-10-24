@@ -12,7 +12,7 @@ module Refinery
 
         private
         def find_users
-          @users = User.order('full_name')
+          @users = User.order('username')
         end
       end
     end

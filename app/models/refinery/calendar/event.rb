@@ -50,6 +50,10 @@ module Refinery
         calendar.try(:title)
       end
 
+      def to_param
+        id
+      end
+
       class << self
         def upcoming
           where('refinery_calendar_events.starts_at >= ?', Time.now)

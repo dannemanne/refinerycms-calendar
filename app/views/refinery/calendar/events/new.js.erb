@@ -1,4 +1,4 @@
-var dialog = $("<%=escape_javascript render('event_form') %>");
+var dialog = $("<%=escape_javascript render('event_form', event: @event) %>");
 
 $('.js_exist_cal_radio', dialog).change(function(){
   $('.js_exist_cal_id_select').removeAttr('disabled');

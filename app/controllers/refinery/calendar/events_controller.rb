@@ -2,6 +2,7 @@ module Refinery
   module Calendar
     class EventsController < ::ApplicationController
       before_filter :find_page,           except: [:archive, :new, :create]
+      before_filter :find_event,          except: [:archive, :new, :create, :index]
       before_filter :auth_or_create_cal,  only: :create
 
 
@@ -33,11 +34,20 @@ module Refinery
       end
 
       def show
-        @event = ::Refinery::Calendar::Event.find(params[:id])
-
         # you can use meta fields from your model instead (e.g. browser_title)
         # by swapping @page for @event in the line below:
         present(@page)
+      end
+
+      def update
+        if @event.calendar.allows_event_update_by?(current_refinery_user)
+          if @event.update_attributes(params[:event])
+            flash[:notice] = 'Successfully updated event'
+          else
+            flash[:alert] = 'Failed to update event'
+          end
+        end
+        redirect_to refinery.calendar_events_path
       end
 
       def archive
@@ -48,6 +58,13 @@ module Refinery
       protected
       def find_page
         @page = ::Refinery::Page.where(:link_url => "/calendar/events").first
+      end
+
+      def find_event
+        @event = ::Refinery::Calendar::Event.find(params[:id])
+      rescue StandardError
+        flash[:alert] = 'Could not find Event'
+        redirect_to refinery.calendar_events_path
       end
 
       def personal_calendars

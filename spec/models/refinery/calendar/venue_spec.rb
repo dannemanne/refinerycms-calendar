@@ -4,14 +4,13 @@ module Refinery
   module Calendar
     describe Venue do
       describe "validations" do
-        subject do
-          FactoryGirl.create(:venue,
-          :name => "Refinery CMS")
-        end
+        let(:venue) { FactoryGirl.build(:venue) }
+        it 'validates name presence' do
+          expect( venue ).to be_valid
 
-        it { should be_valid }
-        its(:errors) { should be_empty }
-        its(:name) { should == "Refinery CMS" }
+          venue.name = ''
+          expect( venue ).to_not be_valid
+        end
       end
     end
   end

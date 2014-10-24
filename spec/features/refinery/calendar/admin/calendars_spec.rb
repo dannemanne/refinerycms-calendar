@@ -4,17 +4,17 @@ require "spec_helper"
 describe Refinery do
   describe "Calendar" do
     describe "Admin" do
-      describe "events" do
-        login_refinery_user
+      describe "calendars" do
+        refinery_login_with :refinery_user
 
-        describe "events list" do
+        describe "calendars list" do
           before(:each) do
-            FactoryGirl.create(:event, :title => "UniqueTitleOne")
-            FactoryGirl.create(:event, :title => "UniqueTitleTwo")
+            FactoryGirl.create(:calendar, :title => "UniqueTitleOne")
+            FactoryGirl.create(:calendar, :title => "UniqueTitleTwo")
           end
 
           it "shows two items" do
-            visit refinery.calendar_admin_events_path
+            visit refinery.calendar_admin_calendars_path
             page.should have_content("UniqueTitleOne")
             page.should have_content("UniqueTitleTwo")
           end
@@ -22,9 +22,9 @@ describe Refinery do
 
         describe "create" do
           before(:each) do
-            visit refinery.calendar_admin_events_path
+            visit refinery.calendar_admin_calendars_path
 
-            click_link "Add New Event"
+            click_link "Add New Calendar"
           end
 
           context "valid data" do
@@ -33,7 +33,7 @@ describe Refinery do
               click_button "Save"
 
               page.should have_content("'This is a test of the first string field' was successfully added.")
-              Refinery::Calendar::Event.count.should == 1
+              Refinery::Calendar::Calendar.count.should == 1
             end
           end
 
@@ -42,36 +42,36 @@ describe Refinery do
               click_button "Save"
 
               page.should have_content("Title can't be blank")
-              Refinery::Calendar::Event.count.should == 0
+              Refinery::Calendar::Calendar.count.should == 0
             end
           end
 
           context "duplicate" do
-            before(:each) { FactoryGirl.create(:event, :title => "UniqueTitle") }
+            before(:each) { FactoryGirl.create(:calendar, :title => "UniqueTitle") }
 
             it "should fail" do
-              visit refinery.calendar_admin_events_path
+              visit refinery.calendar_admin_calendars_path
 
-              click_link "Add New Event"
+              click_link "Add New Calendar"
 
               fill_in "Title", :with => "UniqueTitle"
               click_button "Save"
 
               page.should have_content("There were problems")
-              Refinery::Calendar::Event.count.should == 1
+              Refinery::Calendar::Calendar.count.should == 1
             end
           end
 
         end
 
         describe "edit" do
-          before(:each) { FactoryGirl.create(:event, :title => "A title") }
+          before(:each) { FactoryGirl.create(:calendar, :title => "A title") }
 
           it "should succeed" do
-            visit refinery.calendar_admin_events_path
+            visit refinery.calendar_admin_calendars_path
 
             within ".actions" do
-              click_link "Edit this event"
+              click_link "Edit this calendar"
             end
 
             fill_in "Title", :with => "A different title"
@@ -83,15 +83,15 @@ describe Refinery do
         end
 
         describe "destroy" do
-          before(:each) { FactoryGirl.create(:event, :title => "UniqueTitleOne") }
+          before(:each) { FactoryGirl.create(:calendar, :title => "UniqueTitleOne") }
 
           it "should succeed" do
-            visit refinery.calendar_admin_events_path
+            visit refinery.calendar_admin_calendars_path
 
-            click_link "Remove this event forever"
+            click_link "Remove this calendar forever"
 
             page.should have_content("'UniqueTitleOne' was successfully removed.")
-            Refinery::Calendar::Event.count.should == 0
+            Refinery::Calendar::Calendar.count.should == 0
           end
         end
 

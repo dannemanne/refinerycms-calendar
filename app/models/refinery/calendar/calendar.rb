@@ -29,7 +29,7 @@ module Refinery
 
       after_save do
         if changes[:id].nil? # Only perform on update, not create
-          if changes[:default_rgb_code].any?
+          if changes[:default_rgb_code].present?
             # Update all user_calendars that still have the same rgb_code as
             # the previous default_rgb_code (meaning the user never manually updated).
             #
@@ -54,6 +54,10 @@ module Refinery
         cg = default_rgb_code[2..3].to_i(16)
         cb = default_rgb_code[4..5].to_i(16)
         (0.2126*cr + 0.7152*cg + 0.0722*cb) > 127 ? '000000' : 'ffffff'
+      end
+
+      def allows_event_update_by?(user)
+        user.present? && function.blank? && user_id == user.id
       end
 
 
