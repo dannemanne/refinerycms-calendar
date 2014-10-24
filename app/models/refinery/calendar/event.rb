@@ -1,10 +1,6 @@
 module Refinery
   module Calendar
     class Event < Refinery::Core::BaseModel
-      extend FriendlyId
-
-      friendly_id :title, :use => :slugged
-
       belongs_to :venue
       belongs_to :calendar
 
@@ -48,10 +44,6 @@ module Refinery
 
       def calendar_title
         calendar.try(:title)
-      end
-
-      def to_param
-        id
       end
 
       class << self
