@@ -50,6 +50,17 @@ module Refinery
         redirect_to refinery.calendar_events_path
       end
 
+      def destroy
+        if @event.calendar.allows_event_update_by?(current_refinery_user)
+          if @event.destroy
+            flash[:notice] = 'Successfully removed event'
+          else
+            flash[:alert] = 'Failed to remove event'
+          end
+        end
+        redirect_to refinery.calendar_events_path
+      end
+
       def archive
         @events = ::Refinery::Calendar::Event.archive.order('refinery_calendar_events.starts_at DESC')
         render :template => 'refinery/calendar/events/index'

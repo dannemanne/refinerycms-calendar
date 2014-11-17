@@ -62,4 +62,5 @@
 
     <p><%= f.submit event.persisted? ? 'Update Event' : 'Create Event', class: 'button round tiny' %></p>
   <% end %>
+  <p><%= link_to 'Remove Event', refinery.calendar_event_path(event), method: :delete, confirm: 'Are you sure you want to remove this Event?', class: 'button tiny alert' %></p>
 </div>
