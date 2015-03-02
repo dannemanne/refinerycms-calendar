@@ -9,7 +9,7 @@ module Refinery
       helper_method :personal_calendars
 
       def new
-        @event = ::Refinery::Calendar::Event.new(params[:event])
+        @event = ::Refinery::Calendar::Event.new(from: '2015-03-26 09:00:00')
         @venues = ::Refinery::Calendar::Venue.order('name')
       end
 
@@ -34,6 +34,12 @@ module Refinery
       end
 
       def show
+        # you can use meta fields from your model instead (e.g. browser_title)
+        # by swapping @page for @event in the line below:
+        present(@page)
+      end
+
+      def edit
         # you can use meta fields from your model instead (e.g. browser_title)
         # by swapping @page for @event in the line below:
         present(@page)
@@ -69,13 +75,6 @@ module Refinery
       protected
       def find_page
         @page = ::Refinery::Page.where(link_url: '/calendar/events').first
-      end
-
-      def find_event
-        @event = ::Refinery::Calendar::Event.find(params[:id])
-      rescue StandardError
-        flash[:alert] = 'Could not find Event'
-        redirect_to refinery.calendar_events_path
       end
 
       def find_event

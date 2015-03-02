@@ -13,7 +13,7 @@
 
     <div class='field'>
       <%= f.label :to -%>
-      <%= f.text_field :to, :class => 'datetime_range'  -%>
+      <%= f.text_field :to, value: event.to.try(:strftime, '%Y-%m-%d %H:%M'), :class => 'datetime_range'  -%>
     </div>
 
     <div class='field'>
@@ -68,5 +68,4 @@
       <p><%= link_to 'Cancel', refinery.calendar_events_path, class: 'button tiny alert' %></p>
     <% end %>
   <% end %>
-  <p><%= link_to 'Remove Event', refinery.calendar_event_path(event), method: :delete, confirm: 'Are you sure you want to remove this Event?', class: 'button tiny alert' %></p>
 </div>
